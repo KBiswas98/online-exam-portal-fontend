@@ -15,6 +15,7 @@ import AppNavigation from "../../navigation/Navigation";
 const pConfig = {
     key: "root",
     storage,
+    whitelist: "AuthReducers",
 };
 
 const pReducer = persistReducer(pConfig, AllReducers);

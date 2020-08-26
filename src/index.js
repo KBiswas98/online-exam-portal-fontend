@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Store from "./app/redux/store/store";
+import "./app/styles/global.scss";
 
 ReactDOM.render(
     <React.StrictMode>

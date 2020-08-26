@@ -1,0 +1,43 @@
+.row {
+    display: flex;
+    flex-direction: row wrap;
+    align-items: center;
+}
+
+.row-gap {
+    display: flex;
+    flex-direction: row wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.full {
+    flex: 1;
+}
+
+.ah4 {
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Mulish", sans-serif;
+    opacity: 0.7;
+    color: #343434;
+}
+
+.container-layout {
+    padding: 20px;
+}
+
+// components
+.navbar {
+    padding: 0px 150px;
+}
+
+.logo_text {
+    font-family: "Merriweather", serif;
+    color: rgb(53, 53, 53);
+}

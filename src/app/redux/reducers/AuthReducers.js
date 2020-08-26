@@ -1,24 +1,20 @@
-const { AUTH } = require("../store/constant");
-
 const initialState = {
     name: "",
     token: "",
     type: null,
-    authLoading: true,
 };
 
 const AuthReducers = (state = initialState, action) => {
     switch (action.type) {
-        case `${AUTH}_PENDING`:
-            return initialState;
-        case `${AUTH}_FULFILLED`:
+        case "SAVE_AUTH":
             return {
                 ...state,
-                authLoading: false,
                 name: action.payload.name,
                 token: action.payload.token,
                 type: action.payload.type,
             };
+        case "RESET_AUTH":
+            return initialState;
         default:
             return state;
     }
