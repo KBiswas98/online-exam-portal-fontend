@@ -3,8 +3,13 @@ import QuestionCard from "../../../components/moleules/QuestionCard/QuestionCard
 import Button from "../../../components/atom/Button/Button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { API_QUESTION } from "../../../helper/api";
+import { API_QUESTION, API_ANSWER } from "../../../helper/api";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Table from "../../../components/moleules/Table/Table";
+import ReactCardFlip from "react-card-flip";
+import Loader from "react-loader-spinner";
 
 const data = [
      "Description: Fetch an image of a dog from the [Dog API](https://dog.ceo/dog-api/)",
@@ -15,13 +20,67 @@ const data = [
 
 export default function StudentDashboard() {
      const history = useHistory();
-     const { token, type } = useSelector((state) => state.AuthReducers);
+     const { token, type, email } = useSelector((state) => state.AuthReducers);
      const [loading, setLoading] = useState(false);
+     const [tableLoading, setTableLoading] = useState(false);
+     const [tableData, setTableData] = useState([]);
      const [allQuestion, setQuestion] = useState([]);
+     const [isFlip, setFlip] = useState(false);
 
      useEffect(() => {
           getNewQuestion();
+          getAllAnswers();
      }, []);
+
+     const getAllAnswers = async () => {
+          setTableLoading(true);
+          let x = [];
+          await axios
+               .get(`${API_ANSWER}/search-by-email/${email}`, {
+                    headers: { Authorization: "Bearer " + token },
+               })
+               .then((res) => {
+                    // console.log(res);
+                    if (res.status === 200) {
+                         Promise.all(
+                              res.data.data.map((qid) =>
+                                   axios.get(`${API_QUESTION}/${qid.qid}`, {
+                                        headers: {
+                                             Authorization: "Bearer " + token,
+                                        },
+                                   })
+                              )
+                         )
+                              .then((resp) => {
+                                   console.log(res.data.data[0].updated_at);
+                                   resp.map((itm, index) => {
+                                        x.push({
+                                             name: itm.data.data.name,
+                                             totalQuestion:
+                                                  itm.data.data.questions
+                                                       .length,
+                                             date:
+                                                  res.data.data[index]
+                                                       .updated_at,
+                                             correct:
+                                                  res.data.data[index].ans
+                                                       .mark || 0,
+                                        });
+                                   });
+                                   setTableData(x);
+                                   setTableLoading(false);
+                                   console.log(resp);
+                              })
+                              .catch((err) => console.log(err));
+                    }
+               })
+               .catch((err) => toast.error(err.message));
+     };
+
+     const flipAndLoad = () => {
+          getAllAnswers();
+          setFlip(!isFlip);
+     };
 
      const getNewQuestion = async () => {
           setLoading(true);
@@ -34,7 +93,7 @@ export default function StudentDashboard() {
                     setLoading(false);
                     res.status === 200 && setQuestion(res.data.data.reverse());
                })
-               .catch((err) => console.log(err));
+               .catch((err) => toast.error(err.message));
      };
 
      const removeTest = async (id) => {
@@ -45,12 +104,20 @@ export default function StudentDashboard() {
                .then((res) => {
                     res.status === 200 && getNewQuestion();
                })
-               .catch((err) => console.log(err));
+               .catch((err) => toast.error(err.message));
      };
 
      const renderQuestion = () => {
           return loading ? (
-               <p>Loading...</p>
+               <div style={{ marginTop: "25vh" }}>
+                    <Loader
+                         type="TailSpin"
+                         color="#f1803a"
+                         height={50}
+                         width={50}
+                         // timeout={3000} //3 secs
+                    />
+               </div>
           ) : allQuestion.length > 0 ? (
                allQuestion.map((itm) => (
                     <QuestionCard
@@ -71,6 +138,54 @@ export default function StudentDashboard() {
           );
      };
 
+     const renderTable = () => {
+          let data = [
+               {
+                    name: "math",
+                    totalQuestion: 30,
+                    date: new Date().toISOString(),
+                    correct: 25,
+               },
+               {
+                    name: "asd",
+                    totalQuestion: 10,
+                    date: new Date().toISOString(),
+                    correct: 5,
+               },
+          ];
+          let column = [
+               {
+                    Header: "Name",
+                    accessor: "name",
+               },
+               {
+                    Header: "Question no",
+                    accessor: "totalQuestion",
+               },
+               {
+                    Header: "Exam date",
+                    accessor: "date",
+               },
+               {
+                    Header: "Correct ans",
+                    accessor: "correct",
+               },
+          ];
+          return tableLoading ? (
+               <div style={{ marginTop: "25vh" }}>
+                    <Loader
+                         type="TailSpin"
+                         color="#f1803a"
+                         height={50}
+                         width={50}
+                         // timeout={3000} //3 secs
+                    />
+               </div>
+          ) : (
+               <Table column={column} _data={tableData} />
+          );
+     };
+
      return (
           <div className="center_container">
                <div
@@ -81,10 +196,14 @@ export default function StudentDashboard() {
                     <Button
                          type="primary"
                          name="Show all results"
-                         onClick={() => history.push("/student/examzone")}
+                         onClick={() => flipAndLoad()}
                     />
                </div>
-               {renderQuestion()}
+               <ReactCardFlip isFlipped={isFlip} flipDirection="horizontal">
+                    {renderQuestion()}
+                    {renderTable()}
+               </ReactCardFlip>
+               <ToastContainer />
           </div>
      );
 }

@@ -33,7 +33,7 @@ export default function QuestionCard({
      };
 
      return (
-          <div className="question_card">
+          <div className="question_card" style={{ width: "58vw" }}>
                <h2 className="ah2" onClick={() => onClick()}>
                     {qsName}
                </h2>
