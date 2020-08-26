@@ -8,6 +8,9 @@ import StudentDashboard from "../screens/student/dashboard/StudentDashboard";
 import AdminDashboard from "../screens/admin/dashboard/AdminDashboard";
 import AdminLogin from "../screens/login/AdminLogin";
 import PrivateRoute from "./PrivateRoute";
+import QuestionBuilder from "../screens/admin/questionBuilder/QuestionBuilder";
+import ResultTable from "../screens/admin/resultTable/ResultTable";
+import ExamZone from "../screens/student/examZone/ExamZone";
 
 export default function AppNavigation() {
     return (
@@ -25,23 +28,31 @@ export default function AppNavigation() {
                         component={StudentDashboard}
                     />
                     <PrivateRoute
+                        _for="student"
+                        exact
+                        path="/student/examzone"
+                        component={ExamZone}
+                    />
+                    <PrivateRoute
                         _for="admin"
                         exact
                         path="/admin"
                         component={AdminDashboard}
                     />
-                    <Route exact path="/signup" component={Signup} />
-
-                    {/* <Route
+                    <PrivateRoute
+                        _for="admin"
                         exact
-                        path="/s-dashboard"
-                        component={StudentDashboard}
+                        path="/admin/question-builder"
+                        component={QuestionBuilder}
                     />
-                    <Route
+                    <PrivateRoute
+                        _for="admin"
                         exact
-                        path="/a-dashboard"
-                        component={AdminDashboard}
-                    /> */}
+                        path="/admin/result"
+                        component={ResultTable}
+                    />
+
+                    <Route exact path="/signup" component={Signup} />
                     <Route exact path="*" component={FourOFour} />
                 </Switch>
             </Router>
