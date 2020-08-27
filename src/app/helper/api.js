@@ -1,5 +1,5 @@
-// const HOST = "http://139.59.33.158";
-const HOST = "http://localhost:5000";
+const HOST = "https://www.sani.live";
+// const HOST = "http://localhost:5000";
 
 export const API_STUDENT = HOST + "/student";
 export const API_ANSWER = HOST + "/answer";

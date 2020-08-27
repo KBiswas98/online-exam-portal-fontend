@@ -24,11 +24,11 @@ export default function QuestionCard({
                     headers: { Authorization: "Bearer " + token },
                })
                .then((res) => {
-                    console.log(res);
+                    //console.log(res);
                     setNoOfstudent(res.data.data.length);
                })
                .catch((err) => {
-                    console.log(err);
+                    //console.log(err);
                });
      };
 

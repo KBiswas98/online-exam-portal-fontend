@@ -27,19 +27,10 @@ export default function ExamZone(props) {
      const childRef = useRef();
      const [ans, setAns] = useState([]);
 
-     const questionUpdater = (e) => {
-          holder.push(e);
-     };
-
      const exit = () => {
-          console.log("exi");
+          // console.log("exi");
           history.push("/student");
      };
-
-     useEffect(() => {
-          console.log(props.location.state.obj.questions);
-          // renderMcq();
-     }, []);
 
      const renderMcq = () =>
           props.location.state.obj.questions.map((itm) => (
@@ -49,19 +40,12 @@ export default function ExamZone(props) {
           ));
 
      const onSubmit = async () => {
-          console.log(
-               _.uniqBy(ans.reverse(), "question").filter(
-                    (itm) => itm.isCorrect
-               )
-          );
           const bdy = {
                answer: _.uniqBy(ans.reverse(), "question"),
                mark: _.uniqBy(ans.reverse(), "question")
                     .map((itm) => itm.isCorrect)
                     .filter((_itm) => _itm === true).length,
           };
-
-          console.log(bdy);
 
           await axios
                .post(
@@ -76,7 +60,6 @@ export default function ExamZone(props) {
                     }
                )
                .then((res) => {
-                    console.log(res);
                     history.push("/student");
                })
                .catch((err) => {

@@ -14,7 +14,7 @@ function Table({ _data, column }) {
           prepareRow,
      } = useTable({ columns, data });
 
-     console.log(_data);
+     // console.log(_data);
      return (
           <table
                className="card"

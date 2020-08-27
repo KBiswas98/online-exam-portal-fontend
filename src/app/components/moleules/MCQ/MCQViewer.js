@@ -15,30 +15,6 @@ const MCQViewer = ({ question, setAns, ans }) => {
           itm.includes("option")
      );
 
-     //  useEffect(() => {
-
-     //       //   console.log({
-     //       //        question: question.qsName,
-     //       //        answer: question[MOptions[option]],
-     //       //        isCorrect:
-     //       //             question[MOptions[option]] ==
-     //       //             question[Object.keys(question)[question.trueOption + 1]],
-     //       //   });
-     //  }, [option]);
-
-     //  useImperativeHandle(ref, () => ({
-     //       onSubmit() {
-     //            console.log("trigger.");
-     //            props.updates({
-     //                 question: props.question.qsName,
-     //                 answer:
-     //                      props.question[
-     //                           Object.keys(props.question).slice(0, 4)[option]
-     //                      ],
-     //            });
-     //       },
-     //  }));
-
      const updateRadio = (index) => {
           setAns([
                ...ans,

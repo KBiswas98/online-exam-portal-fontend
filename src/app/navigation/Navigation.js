@@ -11,57 +11,74 @@ import PrivateRoute from "./PrivateRoute";
 import QuestionBuilder from "../screens/admin/questionBuilder/QuestionBuilder";
 import ResultTable from "../screens/admin/resultTable/ResultTable";
 import ExamZone from "../screens/student/examZone/ExamZone";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppNavigation() {
-    return (
-        <>
-            <Router>
-                <Navbar />
-                <Switch>
-                    <Route exact path="/" component={Landing} />
-                    <Route exact path="/admin-login" component={AdminLogin} />
-                    <Route exact path="/student-login" component={Login} />
-                    <PrivateRoute
-                        _for="student"
-                        exact
-                        path="/student"
-                        component={StudentDashboard}
-                    />
-                    <PrivateRoute
-                        _for="student"
-                        exact
-                        path="/student/examzone"
-                        component={ExamZone}
-                    />
-                    <PrivateRoute
-                        _for="admin"
-                        exact
-                        path="/admin"
-                        component={AdminDashboard}
-                    />
-                    <PrivateRoute
-                        _for="admin"
-                        exact
-                        path="/admin/question-builder"
-                        component={QuestionBuilder}
-                    />
-                    <PrivateRoute
-                        _for="admin"
-                        exact
-                        path="/admin/result"
-                        component={ResultTable}
-                    />
+     return (
+          <>
+               <Router>
+                    <Navbar />
+                    <Switch>
+                         <Route exact path="/" component={Landing} />
+                         <ProtectedRoute
+                              _for={"admin"}
+                              exact
+                              path="/admin-login"
+                              component={AdminLogin}
+                         />
+                         <ProtectedRoute
+                              _for={"student"}
+                              exact
+                              path="/student-login"
+                              component={Login}
+                         />
+                         <ProtectedRoute
+                              _for={"student"}
+                              exact
+                              path="/signup"
+                              component={Signup}
+                         />
 
-                    <Route exact path="/signup" component={Signup} />
-                    <Route exact path="*" component={FourOFour} />
-                </Switch>
-            </Router>
-        </>
-    );
+                         <PrivateRoute
+                              _for="student"
+                              exact
+                              path="/student"
+                              component={StudentDashboard}
+                         />
+                         <PrivateRoute
+                              _for="student"
+                              exact
+                              path="/student/examzone"
+                              component={ExamZone}
+                         />
+                         <PrivateRoute
+                              _for="admin"
+                              exact
+                              path="/admin"
+                              component={AdminDashboard}
+                         />
+                         <PrivateRoute
+                              _for="admin"
+                              exact
+                              path="/admin/question-builder"
+                              component={QuestionBuilder}
+                         />
+                         <PrivateRoute
+                              _for="admin"
+                              exact
+                              path="/admin/result"
+                              component={ResultTable}
+                         />
+
+                         <Route exact path="*" component={FourOFour} />
+                    </Switch>
+               </Router>
+          </>
+     );
 }
 
 const FourOFour = () => (
-    <h1 style={{ fontSize: 100, textAlign: "center", marginTop: "20%" }}>
-        404
-    </h1>
+     <h1 style={{ fontSize: 100, textAlign: "center", marginTop: "20%" }}>
+          404
+     </h1>
 );
